@@ -15,6 +15,7 @@ int main() {
     }
 
     i = 0;
+    
     for (; i < n && k == 0; i++) {
         if (A[i] < 0) {
             k = 1;

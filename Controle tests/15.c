@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdio.h> // число в обратном порядке
 
 int main() {
     int n, s = 0, k, a;

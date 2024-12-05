@@ -11,14 +11,17 @@ In this example, the sum of 12345 is 15, which is what the program outputs.*/
 #include <stdio.h>
 
 int main() {
-	int a = 12345;
+	int a;
 	int s = 0;
+	
+	printf("Введите число :\n");
+	scanf("%d", &a);
 
 for (int n = a; n != 0; n = n/10){
 	int k = n % 10;
 	s = s + k;
 } 
-	printf("%d ", s);
+	printf("Сумма цифр: %d ", s);
 
 return 0;
 }

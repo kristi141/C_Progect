@@ -1,3 +1,15 @@
+/*Задание:
+for (i=1,k=0; i<10; i++)
+     if (A[i]>A[k]) k=i;
+
+Программа перебирает все элементы в массиве и выводит максимальный.
+Например вводим 5 1 3 -1 5 7
+Программа выводит 7
+
+The program iterates through all the elements in the array and outputs the maximum.
+For example, enter 5 1 3 -1 5 7
+The program outputs 7 */
+
 #include <stdio.h>
 
 int main() {

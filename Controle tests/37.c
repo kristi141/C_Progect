@@ -19,8 +19,8 @@ If there are no duplicate elements, the program outputs that all the elements ar
 
 #include <stdio.h>
 
-int main() {
-    int n = 5;
+int duplicateNumbers(){
+  int n = 5;
     int c[1001];
     int i, b, s = 0;
 
@@ -50,7 +50,13 @@ int main() {
     }
     else {
         printf("Все элементы уникальны.\n");
-    }
+    } 
+}
 
+int main() {
+   
+   duplicateNumbers();
+   
     return 0;
+    
 }

@@ -10,8 +10,8 @@ For example, if you enter 12345, the program will output 54321.*/
 
 #include <stdio.h> 
 
-int main() {
-    int n, s = 0, k, a;
+int reverseNumber(){
+      int n, s = 0, k, a;
 
     printf("Введите число: \n");
     scanf("%d", &a);
@@ -22,6 +22,10 @@ int main() {
     }
 
     printf("Перевернутое число: %d\n", s);
+}
 
+int main() {
+
+reverseNumber();
     return 0;
 }

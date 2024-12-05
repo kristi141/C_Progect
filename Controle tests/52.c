@@ -12,8 +12,8 @@ The program outputs 7 */
 
 #include <stdio.h>
 
-int main() {
-    int k = 0;
+int maxNumber(){
+  int k = 0;
     int A[1001];
     int n = 6;
 
@@ -30,6 +30,11 @@ int main() {
     }
 
     printf("Максимальный элемент: %d \n", A[k]);
+}
+
+int main() {
+    
+    maxNumber();
 
     return 0;
 }

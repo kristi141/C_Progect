@@ -14,8 +14,8 @@ The program outputs 4 */
 
 #include <stdio.h>
 
-int main() {
-    int k = 0, s = 0, i = 0;
+int sumToNegativeNumber(){
+   int k = 0, s = 0, i = 0;
     int A[1001];
     int n;
 
@@ -39,7 +39,12 @@ int main() {
         }
     }
 
-    printf("Сумма элементов до первого отрицательного: %d\n", s);
+    printf("Сумма элементов до первого отрицательного: %d\n", s); 
+}
+
+int main() {
+   
+   sumToNegativeNumber();
 
     return 0;
 }

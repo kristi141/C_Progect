@@ -15,8 +15,8 @@ For example, if you enter 1 2 3 4 5 6, the program will output 2 3 5, since thes
 #include <stdio.h>
 #include <math.h>  
 
-int main() {
-    int j = 0, s, m;
+int primeNumbers(){
+  int j = 0, s, m;
     int n = 6;
     int A[1001];
     int B[1001];
@@ -52,6 +52,13 @@ int main() {
     for (int k = 0; k < j; k++) {
         printf("%d ", B[k]);
     }
+   
+}
 
+int main() {
+  
+primeNumbers();
+   
     return 0;
 }
+

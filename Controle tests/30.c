@@ -18,8 +18,8 @@ The program will output: 2 3 5 7 11 */
 
 #include <stdio.h>
 
-int main() {
-    int i = 0, s, a, v, m, j;
+int rangePrimeNumber(){
+int i = 0, s, a, v, m, j;
     int A[1001];
 
     printf("Введите границу диапазона: \n");
@@ -51,6 +51,12 @@ int main() {
     for (j = 0; j < i; j++) {
         printf("%d ", A[j]);
     }
+  
+}
+
+int main() {
+   
+rangePrimeNumber();
 
     return 0;
 }

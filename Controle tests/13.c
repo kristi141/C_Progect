@@ -10,8 +10,8 @@ In this example, the sum of 12345 is 15, which is what the program outputs.*/
 
 #include <stdio.h>
 
-int main() {
-	int a;
+int sumOfNumber(){
+  int a;
 	int s = 0;
 	
 	printf("Введите число :\n");
@@ -22,6 +22,11 @@ for (int n = a; n != 0; n = n/10){
 	s = s + k;
 } 
 	printf("Сумма цифр: %d ", s);
+}
+
+int main() {
+
+sumOfNumber();
 
 return 0;
 }

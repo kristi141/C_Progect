@@ -208,7 +208,7 @@ int sort() {
     int B[n];
     for (j = 0; n != 0; j++) {
         for (k = 0, i = 1; i < n; i++) {
-            if (A[i] < A[k]) {
+            if (A[i] < A[k]) {                                                                                                
                 k = i;
             }
         }

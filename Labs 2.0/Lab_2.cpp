@@ -2,7 +2,6 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
-#include <limits>
 
 using namespace std;
 
@@ -78,17 +77,17 @@ vector<Student> loadFromFile(const string& filename) {
     vector<Student> students;
     ifstream file(filename);
 
-    while (!file.eof()) {
-        Student student;
+    if (!file.is_open()) {
+        cout << "Не удалось открыть файл для чтения" << endl;
+        return students;
+    }
 
-        file >> student.surname >> student.gradeCount;
-        student.grades.resize(student.gradeCount);
-
-        for (int& grade : student.grades) {
+    while (file >> students.back().surname >> students.back().gradeCount) {
+        students.back().grades.resize(students.back().gradeCount);
+        for (int& grade : students.back().grades) {
             file >> grade;
         }
-        calculateAverage(student);
-        students.push_back(student);
+        calculateAverage(students.back());
     }
     file.close();
     return students;
@@ -149,8 +148,17 @@ int main() {
     string filename = "Students.txt";
 
     do {
-        cout << "\nМеню:\n";
-        cout << "1. Ввод записи\n2. Просмотр таблицы\n3. Сохранить в файл\n4. Загрузить из файла\n5. Сортировка\n6. Поиск\n7. Удаление\n8. Редактирование\n9. Вычислить сумму средних баллов\n0. Выход\n";
+        cout << "Меню:"<< endl;
+        cout << "1. Ввод записи"<< endl; 
+        cout << "2. Просмотр таблицы"<< endl; 
+        cout << "3. Сохранить в файл"<< endl;  
+        cout << "4. Загрузить из файла"<< endl;  
+        cout << "5. Сортировка"<< endl; 
+        cout << "6. Поиск"<< endl; 
+        cout << "7. Удаление"<< endl;
+        cout << "8. Редактирование"<< endl;
+        cout << "9. Вычислить сумму средних баллов"<< endl; 
+        cout << "0. Выход"<< endl;
         cout << "Выберите действие: ";
         cin >> choice;
 

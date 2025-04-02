@@ -248,41 +248,41 @@ int main() {
             }
 
 
-case 6: {
-    int searchType;
-    cout << "Выберите критерий поиска:\n";
-    cout << "1 - По фамилии\n";
-    cout << "2 - По количеству оценок\n";
-    cout << "3 - По среднему баллу\n";
-    cout << "Введите номер: ";
-    cin >> searchType;
+            case 6: {
+                int searchType;
+                cout << "Выберите критерий поиска:\n";
+                cout << "1 - По фамилии\n";
+                cout << "2 - По количеству оценок\n";
+                cout << "3 - По среднему баллу\n";
+                cout << "Введите номер: ";
+                cin >> searchType;
 
-    searchByCriteria(students, searchType);
-    break;
-}
+                searchByCriteria(students, searchType);
+                 break;
+            }
 
-        case 7: {
-            string deleteName;
-            cout << "Введите фамилию для удаления: ";
-            cin >> deleteName;
+             case 7: {
+                string deleteName;
+                cout << "Введите фамилию для удаления: ";
+                cin >> deleteName;
 
-            deleteStudent(students, deleteName);
-            break;
-        }
+                deleteStudent(students, deleteName);
+                break;
+             }
 
-        case 8: {
-            string editName;
-            cout << "Введите фамилию для редактирования: ";
-            cin >> editName;
+            case 8: {
+                string editName;
+                cout << "Введите фамилию для редактирования: ";
+                cin >> editName;
 
-            editStudent(students, editName);
-            break;
-        }
+                editStudent(students, editName);
+                break;
+            }
 
-        case 9:
-            cout << "Общая сумма средних баллов: " << calculateTotalAverage(students) << "\n";
-            break;
-        }
+            case 9:
+                cout << "Общая сумма средних баллов: " << calculateTotalAverage(students) << "\n";
+                break;
+            }
     } while (choice != 0);
 
     return 0;

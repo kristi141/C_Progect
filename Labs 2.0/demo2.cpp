@@ -26,7 +26,7 @@ void calculateAverage(Student& student) {
     student.average = static_cast<double>(sum) / student.gradeCount;
 }
 
-// Функция для ввода студента
+// Функция для ввода записи с клавиатуры
 Student inputStudent() {
     Student student;
 
@@ -45,74 +45,71 @@ Student inputStudent() {
     return student;
 }
 
-// Вывод таблицы
+// Функция для вывода таблицы
 void displayTable(const vector<Student>& students) {
     cout << "\nСписок студентов:\n";
+
     for (const auto& student : students) {
-        cout << student.surname << " (" << student.gradeCount << " оценок): ";
+        cout << student.surname << " " << student.gradeCount << " оценок: ";
         for (int grade : student.grades) {
             cout << grade << " ";
         }
-        cout << "| Средний балл: " << student.average << "\n";
+        cout << "Средний балл: " << student.average << "\n";
     }
 }
 
-// Сохранение в файл
+// Функция для сохранения в файл
 void saveToFile(const vector<Student>& students, const string& filename) {
     ofstream file(filename);
-    if (!file) {
-        cout << "Ошибка открытия файла!\n";
-        return;
-    }
 
     for (const auto& student : students) {
         file << student.surname << " " << student.gradeCount;
+
         for (int grade : student.grades) {
             file << " " << grade;
         }
-        file << "\n"; // Добавляем перевод строки для корректной загрузки
     }
     file.close();
 }
 
-// Загрузка из файла
+// Функция для загрузки из файла
 vector<Student> loadFromFile(const string& filename) {
     vector<Student> students;
     ifstream file(filename);
 
-    if (!file) {
-        cout << "Не удалось открыть файл для чтения.\n";
+    if (!file.is_open()) {
+        cout << "Не удалось открыть файл для чтения" << endl;
         return students;
     }
 
-    Student student;
-    while (file >> student.surname >> student.gradeCount) {
-        student.grades.resize(student.gradeCount);
-        for (int& grade : student.grades) {
+    while (file >> students.back().surname >> students.back().gradeCount) {
+        students.back().grades.resize(students.back().gradeCount);
+        for (int& grade : students.back().grades) {
             file >> grade;
         }
-        calculateAverage(student);
-        students.push_back(student);
+        calculateAverage(students.back());
     }
-
     file.close();
     return students;
 }
 
-// Сортировка
+// Функция сортировки
 void sortTable(vector<Student>& students, int sortType) {
     switch (sortType) {
     case 1:
+        // Сортировка по среднему баллу (по возрастанию)
         sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
             return a.average < b.average;
         });
         break;
     case 2:
+        // Сортировка по фамилии (в алфавитном порядке)
         sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
             return a.surname < b.surname;
         });
         break;
     case 3:
+        // Сортировка по количеству оценок (по возрастанию)
         sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
             return a.gradeCount < b.gradeCount;
         });
@@ -124,7 +121,8 @@ void sortTable(vector<Student>& students, int sortType) {
     cout << "Таблица отсортирована\n";
 }
 
-// Поиск по фамилии
+
+// Функция поиска студента
 Student* searchStudent(vector<Student>& students, const string& surname) {
     for (auto& student : students) {
         if (student.surname == surname) {
@@ -134,59 +132,29 @@ Student* searchStudent(vector<Student>& students, const string& surname) {
     return nullptr;
 }
 
-// Поиск студентов по среднему баллу или количеству оценок
-void searchByCriteria(const vector<Student>& students, int searchType) {
-    if (students.empty()) {
-        cout << "Список студентов пуст!\n";
-        return;
-    }
-
-    if (searchType == 1) {
-        string searchName;
-        cout << "Введите фамилию для поиска: ";
-        cin >> searchName;
-        Student* found = searchStudent(const_cast<vector<Student>&>(students), searchName);
-        if (found) {
-            cout << "Найден: " << found->surname << " со средним баллом " << found->average << "\n";
-        } else {
-            cout << "Студент не найден!\n";
-        }
-    } else if (searchType == 2 || searchType == 3) {
-        double searchValue;
-        cout << "Введите значение для поиска: ";
-        cin >> searchValue;
-
-        bool found = false;
-        for (const auto& student : students) {
-            if ((searchType == 2 && student.gradeCount == searchValue) ||
-                (searchType == 3 && abs(student.average - searchValue) < 1e-9)) {
-                cout << "Найден: " << student.surname << "\n";
-                found = true;
-            }
-        }
-        if (!found) cout << "Совпадений не найдено.\n";
-    } else {
-        cout << "Неверный тип поиска!\n";
-    }
-}
-
-// Удаление студента
+// Функция удаления записи
 void deleteStudent(vector<Student>& students, const string& surname) {
-    students.erase(remove_if(students.begin(), students.end(),
-        [&](const Student& s) { return s.surname == surname; }), students.end());
+    students.erase(remove_if(students.begin(), students.end(), [&](const Student& s) {
+        return s.surname == surname;
+        }
+    ), 
+        students.end()
+    );
 }
 
-// Редактирование студента
+// Функция редактирования записи
 void editStudent(vector<Student>& students, const string& surname) {
     Student* student = searchStudent(students, surname);
+
     if (student) {
         *student = inputStudent();
-    } else {
-        cout << "Студент не найден!\n";
+    }
+    else {
+       cout << "Студент не найден!\n";
     }
 }
 
-// Подсчет общей суммы средних баллов
+// Функция вычисления суммы всех средних баллов
 double calculateTotalAverage(const vector<Student>& students) {
     double sum = 0.0;
     for (const auto& student : students) {
@@ -235,31 +203,32 @@ int main() {
             break;
 
          case 5: {
-                int sortType;
-                cout << "Выберите тип сортировки:\n";
-                cout << "1 - По среднему баллу\n";
-                cout << "2 - По фамилии\n";
-                cout << "3 - По количеству оценок\n";
-                cout << "Введите номер: ";
-                cin >> sortType;
+            int sortType;
+            cout << "Выберите тип сортировки:\n";
+            cout << "1 - По среднему баллу\n";
+            cout << "2 - По фамилии\n";
+            cout << "3 - По количеству оценок\n";
+            cout << "Введите номер: ";
+            cin >> sortType;
 
                 sortTable(students, sortType);
                 break;
             }
 
-
-case 6: {
-    int searchType;
-    cout << "Выберите критерий поиска:\n";
-    cout << "1 - По фамилии\n";
-    cout << "2 - По количеству оценок\n";
-    cout << "3 - По среднему баллу\n";
-    cout << "Введите номер: ";
-    cin >> searchType;
-
-    searchByCriteria(students, searchType);
-    break;
-}
+        case 6: {
+            string searchName;
+            cout << "Введите фамилию для поиска: ";
+            cin >> searchName
+                ;
+            Student* found = searchStudent(students, searchName);
+            if (found) {
+               cout << "Найден: " << found->surname << " со средним баллом " << found->average << "\n";
+            }
+            else {
+                cout << "Студент не найден!\n";
+            }
+            break;
+        }
 
         case 7: {
             string deleteName;

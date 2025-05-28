@@ -5,61 +5,87 @@
 #include <limits>
 using namespace std;
 
-// --- Проверка для строк char* (только буквы) ---
+// Проверка на допустимость строки (содержит только буквы) 
 bool isValidCharString(const string& s) {
     for (char c : s) {
-        if (!isalpha(static_cast<unsigned char>(c))) return false;
+        if (!isalpha(static_cast<unsigned char>(c))){
+             return false; // Проверка на алфавитный символ
+        }
     }
     return true;
 }
 
-// --- Дерево int* ---
+// Класс узла для дерева int
 class NodeInt {
 public:
-    int* data;
-    vector<NodeInt*> children;
-    int capacity;
+    int* data; // Указатель на данные
+    vector<NodeInt*> children; // Дети узла
+    int capacity; // Максимальное число детей
 
     NodeInt(int* d, int cap) : data(d), capacity(cap) {}
+
     ~NodeInt() {
         for (auto c : children) delete c;
-        delete data;
+        delete data; // Удаляем сами данные
     }
 };
 
+// Класс дерева для int
 class TreeInt {
-    NodeInt* root = nullptr;
-    int initialCapacity;
+    NodeInt* root = nullptr; // Корень дерева
+    int initialCapacity; // Изначальная емкость узлов
 
+    // Рекурсивный поиск узла с доступным местом
     NodeInt* findAvailable(NodeInt* node) {
-        if (node->children.size() < node->capacity) return node;
+        if (node->children.size() < node->capacity){
+             return node;
+        }
         for (auto c : node->children) {
             NodeInt* found = findAvailable(c);
-            if (found) return found;
+
+            if (found){
+                 return found;
+            }
         }
         return nullptr;
     }
 
+    // Рекурсивное разворачивание дерева в линейный список
     void flatten(NodeInt* node, vector<int*>& out) {
-        if (!node) return;
+        if (!node){
+             return;
+        }
         out.push_back(node->data);
-        for (auto c : node->children) flatten(c, out);
+        for (auto c : node->children){
+             flatten(c, out);
+        }
     }
 
+    // Рекурсивный вывод дерева в виде структуры
     void printNode(NodeInt* node, int level, int idx) {
-        for (int i = 0; i < level; i++) cout << "    ";
+        for (int i = 0; i < level; i++){
+             cout << "    ";
+        }
+
         if (level > 0) cout << "|-- " << idx << ". ";
         cout << *node->data << endl;
-        for (int i = 0; i < (int)node->children.size(); i++)
+
+        for (int i = 0; i < (int)node->children.size(); i++){
             printNode(node->children[i], level + 1, i + 1);
+        }
     }
 
-    // Рекурсивная функция для вывода отсортированного дерева int
+    // Рекурсивный вывод отсортированного линейного представления дерева
     int printSortedNode(const vector<int*>& flat, int index, int level) {
-        if (index >= (int)flat.size()) return index;
-        for (int i = 0; i < level; i++) cout << "    ";
+        if (index >= (int)flat.size()){
+             return index;
+        }
+        for (int i = 0; i < level; i++){ 
+            cout << "    ";
+        }
         if (level > 0) cout << "|-- " << index << ". ";
         cout << *flat[index] << endl;
+
         int nextIndex = index + 1;
         for (int i = 0; i < initialCapacity; i++) {
             if (nextIndex < (int)flat.size())
@@ -74,6 +100,7 @@ public:
     TreeInt(int cap) : initialCapacity(cap) {}
     ~TreeInt() { delete root; }
 
+    // Добавление нового значения
     void add(int val) {
         int* p = new int(val);
         if (!root) root = new NodeInt(p, initialCapacity);
@@ -86,16 +113,19 @@ public:
         }
     }
 
+    // Печать дерева в обычной структуре
     void print() {
         if (!root) {
             cout << "Дерево int* пусто!\n";
             return;
         }
         cout << "1. " << *root->data << endl;
+
         for (int i = 0; i < (int)root->children.size(); i++)
             printNode(root->children[i], 1, i + 1);
     }
 
+    // Печать отсортированного дерева
     void printSorted() {
         if (!root) {
             cout << "Дерево int* пусто!\n";
@@ -103,13 +133,14 @@ public:
         }
         vector<int*> flat;
         flatten(root, flat);
+
         sort(flat.begin(), flat.end(), [](int* a, int* b) { return *a < *b; });
         cout << "Отсортированное дерево int*:\n";
         printSortedNode(flat, 0, 0);
     }
 };
 
-// --- Дерево char* ---
+// Класс узла для дерева char
 class NodeChar {
 public:
     char* data;
@@ -117,31 +148,42 @@ public:
     int capacity;
 
     NodeChar(char* d, int cap) : data(d), capacity(cap) {}
+
     ~NodeChar() {
         for (auto c : children) delete c;
         delete[] data;
     }
 };
 
+//Класс дерева для char
 class TreeChar {
     NodeChar* root = nullptr;
     int initialCapacity;
 
+    // Ищем первый узел, в который можно добавить потомка
     NodeChar* findAvailable(NodeChar* node) {
-        if (node->children.size() < node->capacity) return node;
+        if (node->children.size() < node->capacity){
+             return node;
+        }
         for (auto c : node->children) {
             NodeChar* found = findAvailable(c);
-            if (found) return found;
+
+            if (found){
+                 return found;
+            }
         }
         return nullptr;
     }
 
+    // Разворачиваем дерево в вектор указателей на строки
     void flatten(NodeChar* node, vector<char*>& out) {
         if (!node) return;
         out.push_back(node->data);
+
         for (auto c : node->children) flatten(c, out);
     }
 
+    // Рекурсивно выводим дерево с отступами
     void printNode(NodeChar* node, int level, int idx) {
         for (int i = 0; i < level; i++) cout << "    ";
         if (level > 0) cout << "|-- " << idx << ". ";
@@ -150,12 +192,17 @@ class TreeChar {
             printNode(node->children[i], level + 1, i + 1);
     }
 
-    // Рекурсивная функция для вывода отсортированного дерева char
+    // Рекурсивно выводим отсортированное дерево
     int printSortedNode(const vector<char*>& flat, int index, int level) {
-        if (index >= (int)flat.size()) return index;
-        for (int i = 0; i < level; i++) cout << "    ";
+        if (index >= (int)flat.size()){
+             return index;
+        }
+        for (int i = 0; i < level; i++){
+             cout << "    ";
+        }
         if (level > 0) cout << "|-- " << index << ". ";
         cout << flat[index] << endl;
+        
         int nextIndex = index + 1;
         for (int i = 0; i < initialCapacity; i++) {
             if (nextIndex < (int)flat.size())
@@ -167,9 +214,14 @@ class TreeChar {
     }
 
 public:
+// Конструктор дерева с заданной вместимостью узлов
     TreeChar(int cap) : initialCapacity(cap) {}
-    ~TreeChar() { delete root; }
 
+    ~TreeChar() { 
+        delete root; 
+    }
+
+    // Добавляет строку в дерево
     void add(const string& str) {
         char* p = new char[str.length() + 1];
         strcpy(p, str.c_str());
@@ -206,7 +258,7 @@ public:
     }
 };
 
-// --- Массив int* ---
+// Класс для массива int
 class ArrayInt {
     vector<int*> data;
 public:
@@ -231,7 +283,7 @@ public:
     }
 };
 
-// --- Массив char* ---
+// Класс для массива char
 class ArrayChar {
     vector<char*> data;
 public:

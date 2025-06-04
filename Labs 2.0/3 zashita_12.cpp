@@ -29,7 +29,7 @@ int main() {
     // В каждой строке по 3 элемента
     double result = F12(matrix, 3);
 
-    cout << "Сумма: " << result << std::endl;
+    std::cout << "Сумма: " << result << std::endl;
 
     return 0;
 }

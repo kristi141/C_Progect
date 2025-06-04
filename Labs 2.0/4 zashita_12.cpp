@@ -1,3 +1,5 @@
+//двусвязный список циклический
+
 #include <iostream>
 using namespace std;
 
